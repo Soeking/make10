@@ -16,6 +16,19 @@ function setnum(numbers)
     end
 end
 
+function order(target)
+    subli = target
+    for i in 1:4
+        subli[1],subli[i] = subli[i],subli[1]
+        for j in 1:3
+            subli[3],subli[4] = subli[4],subli[3]
+            setnum(subli)
+            subli[2],subli[4] = subli[4],subli[2]
+            setnum(subli)
+        end
+    end
+end
+
 function calc(op::Char,x,y)
     if op == '+'
         return x + y
@@ -41,7 +54,7 @@ end
 
 #(a-(b-c))-d
 function pattern2(nums,op1,op2,op3)
-    if calc(op3, calc(op1, calc(op2, nums[2], nums[3]), nums[1]), nums[4]) == correct
+    if calc(op3, calc(op1, nums[1], calc(op2, nums[2], nums[3])), nums[4]) == correct
         global output = "($(nums[1])$(op1)($(nums[2])$(op2)$(nums[3])))$(op3)$(nums[4])"
         finish()
     end
@@ -49,7 +62,7 @@ end
 
 #a-((b-c)-d)
 function pattern3(nums,op1,op2,op3)
-    if calc(op1, calc(op3, calc(op2, nums[2], nums[3]), nums[4]), nums[1]) == correct
+    if calc(op1, nums[1], calc(op3, calc(op2, nums[2], nums[3]), nums[4])) == correct
         global output = "$(nums[1])$(op1)(($(nums[2])$(op2)$(nums[3]))$(op3)$(nums[4]))"
         finish()
     end
@@ -57,7 +70,7 @@ end
 
 #a-(b-(c-d))
 function pattern4(nums,op1,op2,op3)
-    if calc(op1, calc(op2, calc(op3, nums[3], nums[4]), nums[2]), nums[1]) == correct
+    if calc(op1,nums[1], calc(op2, nums[2], calc(op3, nums[3], nums[4]))) == correct
        global output = "$(nums[1])$(op1)($(nums[2])$(op2)($(nums[3])$(op3)$(nums[4])))"
        finish()
     end
@@ -77,7 +90,8 @@ end
 
 function main()
     target = map(x->parse(Int,x),split(readline()))
-    setnum(target)
+    sort!(target)
+    order(target)
 end
 
 main()
