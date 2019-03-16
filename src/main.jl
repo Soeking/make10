@@ -1,6 +1,7 @@
 symbol = ['+','-','*','/']
 output = ""
 correct = 10
+pass = Set()
 
 function setnum(numbers)
     for first_symbol in symbol
@@ -17,15 +18,20 @@ function setnum(numbers)
 end
 
 function order(target)
-    subli = target
+    subli = copy(target)
+    idx = 1
     for i in 1:4
         subli[1],subli[i] = subli[i],subli[1]
         for j in 1:3
             subli[3],subli[4] = subli[4],subli[3]
-            setnum(subli)
+            push!(pass,copy(subli))
             subli[2],subli[4] = subli[4],subli[2]
-            setnum(subli)
+            push!(pass,copy(subli))
         end
+    end
+
+    for x in pass
+        setnum(x)
     end
 end
 
@@ -49,6 +55,7 @@ function pattern1(nums,op1,op2,op3)
     if calc(op3, calc(op2, calc(op1, nums[1], nums[2]), nums[3]), nums[4]) == correct
         global output = "(($(nums[1])$(op1)$(nums[2]))$(op2)$(nums[3]))$(op3)$(nums[4])"
         finish()
+
     end
 end
 
