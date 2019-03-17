@@ -2,6 +2,7 @@ symbol = ['+','-','*','/']
 output = ""
 correct = 10
 pass = Set()
+judge = false
 
 function setnum(numbers)
     for first_symbol in symbol
@@ -93,12 +94,14 @@ end
 
 function finish()
     println(output)
+    global judge = true
 end
 
 function main()
     target = map(x->parse(Int,x),split(readline()))
     sort!(target)
     order(target)
+    judge || println("none")
 end
 
 main()
